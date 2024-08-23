@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { listar } from './controllers/instrutores'
+import { detalhar, listar } from './controllers/instrutores'
 
 const routes = Router()
 
@@ -7,6 +7,8 @@ const routes = Router()
 routes.get('/instrutores', listar)
 
 // detalhar as informações de um instrutor
+routes.get('/instrutores/:id', detalhar)
+
 // cadastrar um instrutor
 // editar um instrutor
 // excluir um instrutor
