@@ -38,3 +38,17 @@ export const detalhar = (req: Request, res: Response) => {
 
     return res.status(200).json(instrutor)
 }
+
+export const cadastrar = (req: Request, res: Response) => {
+  const { nome, email } = req.body // corpo da requisição
+
+  const novoInstrutor = {
+    id: 3,
+    nome,
+    email
+}
+
+  instrutores.push(novoInstrutor)
+
+  return res.status(201).json(novoInstrutor)
+}
