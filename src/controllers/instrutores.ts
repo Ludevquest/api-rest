@@ -1,32 +1,14 @@
 import {Request, Response} from 'express'
-
-type TInstrutores = {
-  id: number
-  nome: string
-  email: string
-}
-
-const instrutores: TInstrutores[] = [
-  {
-    id: 1,
-    nome: 'Luiz',
-    email: 'luiz@email.com'
-  },
-  {
-    id: 2,
-    nome: 'Maria',
-    email: 'maria@email.com'
-  }
-]
+import bancodedados from '../bancoDeDados'
 
 export const listar = (req: Request, res: Response) => {
-  return res.status(200).json(instrutores)
+  return res.status(200).json(bancodedados.instrutores)
 }
 
 export const detalhar = (req: Request, res: Response) => {
   const { id } = req.params
 
-  const instrutor = instrutores.find((item) => {
+  const instrutor = bancodedados.instrutores.find((item) => {
     return item.id === Number(id)
   })
 
@@ -43,12 +25,72 @@ export const cadastrar = (req: Request, res: Response) => {
   const { nome, email } = req.body // corpo da requisição
 
   const novoInstrutor = {
-    id: 3,
+    id: bancodedados.proximoIdentificador++,
     nome,
     email
 }
 
-  instrutores.push(novoInstrutor)
+  bancodedados.instrutores.push(novoInstrutor)
 
   return res.status(201).json(novoInstrutor)
+}
+
+export const atualizar = (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const {nome, email} = req.body
+
+  const instrutor = bancodedados.instrutores.find((item) => {
+    return item.id === Number(id)
+  })
+
+  if (!instrutor) {
+    return res.status(404).json({
+      mensagem: 'Instrutor não encontrado'
+    })
+  }
+
+  instrutor.nome = nome
+  instrutor.email =  email
+
+    return res.status(204).send()
+}
+
+export const atualizarEmail = (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const { email } = req.body
+
+  const instrutor = bancodedados.instrutores.find((item) => {
+    return item.id === Number(id)
+  })
+
+  if (!instrutor) {
+    return res.status(404).json({
+      mensagem: 'Instrutor não encontrado'
+    })
+  }
+
+  instrutor.email =  email
+
+    return res.status(204).send()
+}
+
+export const excluir = (req: Request, res: Response) => {
+  const { id } = req.params
+
+
+  const instrutorIndice = bancodedados.instrutores.findIndex((item) => {
+    return item.id === Number(id)
+  })
+
+  if (instrutorIndice === -1) {
+    return res.status(404).json({
+      mensagem: 'Instrutor não encontrado'
+    })
+  }
+
+  bancodedados.instrutores.splice(instrutorIndice, 1)
+
+    return res.status(204).send()
 }
