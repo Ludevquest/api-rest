@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { atualizar, atualizarEmail, cadastrar, detalhar, excluir, listar } from './controllers/instrutores'
+import { atualizar, atualizarEmail, cadastrar, detalhar, excluir, excluirAula, listar } from './controllers/instrutores'
 import { cadastrarAula } from './controllers/aulas'
 
 const routes = Router()
@@ -24,5 +24,6 @@ routes.delete('/instrutores/:id', excluir)
 routes.post('/instrutores/:id/aulas', cadastrarAula)
 
 // excluir uma aula para um instrutor
+routes.delete('/instrutores/:id/aulas/:idAula', excluirAula)
 
 export default routes
